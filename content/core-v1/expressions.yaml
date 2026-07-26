@@ -1,0 +1,62 @@
+expressions:
+  - id: exp-start-actually
+    function: start_answer
+    intent_ko: 자연스럽게 답변을 시작하기
+    chunk: Actually, I would say that...
+    sentence_frames: ["Actually, I would say that ___."]
+    substitution_slots: [main_idea]
+  - id: exp-reason-main
+    function: give_reason
+    intent_ko: 핵심 이유 말하기
+    chunk: The main reason is that...
+    sentence_frames: ["The main reason is that ___."]
+    substitution_slots: [reason]
+  - id: exp-example-for
+    function: add_example
+    intent_ko: 구체적인 예시 붙이기
+    chunk: For example,...
+    sentence_frames: ["For example, last ___, I ___."]
+    substitution_slots: [time, event]
+  - id: exp-feeling-made
+    function: express_emotion
+    intent_ko: 경험이 준 감정 말하기
+    chunk: It made me feel...
+    sentence_frames: ["It made me feel ___."]
+    substitution_slots: [emotion]
+  - id: exp-detail-especially
+    function: describe_detail
+    intent_ko: 한 가지를 더 구체화하기
+    chunk: especially when...
+    sentence_frames: ["I especially like it when ___."]
+    substitution_slots: [situation]
+  - id: exp-close-thats-why
+    function: close_answer
+    intent_ko: 이유와 결론 연결하기
+    chunk: That's why...
+    sentence_frames: ["That's why I ___."]
+    substitution_slots: [conclusion]
+  - id: exp-sequence-first
+    function: sequence_events
+    intent_ko: 사건의 시작 알리기
+    chunk: At first,...
+    sentence_frames: ["At first, I ___."]
+    substitution_slots: [first_event]
+  - id: exp-compare-used-to
+    function: compare_change
+    intent_ko: 과거와 현재 비교하기
+    chunk: It used to..., but now...
+    sentence_frames: ["It used to be ___, but now it is ___."]
+    substitution_slots: [past_state, current_state]
+  - id: exp-problem-issue
+    function: explain_problem
+    intent_ko: 문제의 핵심 설명하기
+    chunk: The problem was that...
+    sentence_frames: ["The problem was that ___."]
+    substitution_slots: [problem]
+  - id: exp-repair-mean
+    function: repair_or_rephrase
+    intent_ko: 뜻을 다시 분명하게 말하기
+    chunk: What I mean is...
+    sentence_frames: ["What I mean is ___."]
+    substitution_slots: [clarification]
+

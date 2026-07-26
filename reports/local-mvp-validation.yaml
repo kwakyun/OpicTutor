@@ -1,0 +1,46 @@
+version: 1
+project: "opic-speech-quest"
+validated_at: "2026-07-25T15:50:00+09:00"
+snapshot: "local-workspace"
+content:
+  schema_version: 1
+  active_pack: "core-v1"
+  active_questions: 12
+  inactive_fixture_packs: 1
+  expressions: 10
+  training_units: 13
+commands:
+  - command: "npm run content:validate"
+    status: "passed"
+  - command: "npm run check"
+    status: "passed"
+    includes: ["content validation", "TypeScript", "ESLint"]
+  - command: "npm run test"
+    status: "passed"
+    result: "14 tests passed in 5 files"
+  - command: "npm run test:e2e"
+    status: "passed"
+    result: "typed recall-to-transfer flow and speech-input availability passed"
+  - command: "npm run build"
+    status: "passed"
+    result: "6 App Router routes compiled"
+passed_scenarios:
+  - "fresh_start"
+  - "answer_hidden"
+  - "full_loop"
+  - "invalid_transition"
+  - "timer_race"
+  - "reload_restore_contract"
+  - "content_upgrade_contract"
+  - "corrupt_storage"
+  - "data_portability"
+  - "fixture_pack"
+  - "offline_runtime_contract"
+  - "speech_input_adapter"
+failed_scenarios: []
+known_limitations:
+  - "음성 받아쓰기는 Web Speech API 지원 브라우저와 마이크 권한이 필요하며, 환경에 따라 브라우저 제공 음성 서비스가 네트워크를 사용할 수 있다."
+  - "규칙 기반 구조 피드백이며 문장 의미나 발음을 평가하지 않는다."
+  - "초기 활성 콘텐츠는 12개 질문이다."
+  - "기록은 현재 브라우저의 LocalStorage에만 저장된다."
+final_status: "local_mvp_ready"

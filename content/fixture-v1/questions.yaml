@@ -1,0 +1,9 @@
+questions:
+  - id: q-fixture-park
+    pack_id: fixture-v1
+    topic: Park
+    difficulty: easy
+    type: description
+    prompt: Describe a park you enjoy visiting.
+    target_intent_ids: [start, detail, feeling]
+

@@ -1,0 +1,109 @@
+training_units:
+  - id: unit-home-description
+    question_id: q-home-description
+    expression_ids: [exp-start-actually, exp-detail-especially, exp-feeling-made, exp-close-thats-why]
+    retrieval_prompts: ["자연스럽게 답변을 시작하세요.", "가장 좋아하는 순간을 구체화하세요."]
+    progressive_hints: [{level: 1, text: "시작 표현"}, {level: 2, text: "Actually"}, {level: 3, text: "Actually, I would say that ___."}, {level: 4, text: "Actually, I would say that my home is small but comfortable."}]
+    assembly_requirements: ["집의 특징 한 가지", "좋아하는 공간"]
+    expansion_requirements: ["구체적인 상황", "감정"]
+    transfer_question_ids: [q-cafe-description]
+    mastery_criteria: ["전체 예시 없이 문장 완성", "카페 질문에서 같은 표현 사용"]
+  - id: unit-weekend-habit
+    question_id: q-weekend-habit
+    expression_ids: [exp-start-actually, exp-reason-main, exp-example-for, exp-feeling-made, exp-compare-used-to]
+    retrieval_prompts: ["주말 습관을 말하세요.", "그 습관의 이유를 붙이세요."]
+    progressive_hints: [{level: 1, text: "이유 표현"}, {level: 2, text: "The main"}, {level: 3, text: "The main reason is that ___."}, {level: 4, text: "The main reason is that I need time to recharge."}]
+    assembly_requirements: ["주말 활동", "빈도"]
+    expansion_requirements: ["이유", "최근 예시"]
+    transfer_question_ids: [q-exercise-habit]
+    mastery_criteria: ["이유 표현 무힌트 사용", "운동 질문으로 전이"]
+  - id: unit-travel-memory
+    question_id: q-travel-memory
+    expression_ids: [exp-sequence-first, exp-detail-especially, exp-feeling-made, exp-close-thats-why]
+    retrieval_prompts: ["사건의 시작을 알리세요.", "기억에 남은 감정을 말하세요."]
+    progressive_hints: [{level: 1, text: "사건 시작 표현"}, {level: 2, text: "At first"}, {level: 3, text: "At first, I ___."}, {level: 4, text: "At first, I was nervous about traveling alone."}]
+    assembly_requirements: ["언제", "어디서", "무슨 일"]
+    expansion_requirements: ["구체적인 순간", "감정"]
+    transfer_question_ids: [q-first-job-memory]
+    mastery_criteria: ["사건 순서 표현 사용", "첫날 경험으로 전이"]
+  - id: unit-neighborhood-change
+    question_id: q-neighborhood-change
+    expression_ids: [exp-compare-used-to, exp-detail-especially, exp-feeling-made, exp-close-thats-why]
+    retrieval_prompts: ["과거와 현재를 한 문장으로 비교하세요."]
+    progressive_hints: [{level: 1, text: "과거-현재 비교"}, {level: 2, text: "It used"}, {level: 3, text: "It used to be ___, but now ___."}, {level: 4, text: "It used to be quiet, but now it is much busier."}]
+    assembly_requirements: ["과거 상태", "현재 상태"]
+    expansion_requirements: ["구체적 변화", "느낌"]
+    transfer_question_ids: [q-tech-change]
+    mastery_criteria: ["비교 구조 완성", "기술 변화 질문으로 전이"]
+  - id: unit-travel-problem
+    question_id: q-travel-problem
+    expression_ids: [exp-sequence-first, exp-problem-issue, exp-repair-mean, exp-close-thats-why]
+    retrieval_prompts: ["문제의 핵심을 설명하세요.", "해결 결과를 연결하세요."]
+    progressive_hints: [{level: 1, text: "문제 설명"}, {level: 2, text: "The problem"}, {level: 3, text: "The problem was that ___."}, {level: 4, text: "The problem was that I missed the last train."}]
+    assembly_requirements: ["문제", "행동"]
+    expansion_requirements: ["해결 과정", "결과"]
+    transfer_question_ids: [q-cafe-roleplay]
+    mastery_criteria: ["문제 구조 사용", "카페 문제로 전이"]
+  - id: unit-hotel-roleplay
+    question_id: q-hotel-roleplay
+    expression_ids: [exp-start-actually, exp-reason-main, exp-repair-mean, exp-close-thats-why]
+    retrieval_prompts: ["통화 목적을 먼저 말하세요.", "질문을 더 분명하게 바꾸어 말하세요."]
+    progressive_hints: [{level: 1, text: "바꿔 말하기"}, {level: 2, text: "What I"}, {level: 3, text: "What I mean is ___."}, {level: 4, text: "What I mean is, is breakfast included in the price?"}]
+    assembly_requirements: ["통화 목적", "질문 한 개"]
+    expansion_requirements: ["추가 질문 두 개", "정중한 마무리"]
+    transfer_question_ids: [q-cafe-roleplay]
+    mastery_criteria: ["세 가지 질문 완성", "다른 서비스 상황으로 전이"]
+  - id: unit-movie-preference
+    question_id: q-movie-preference
+    expression_ids: [exp-start-actually, exp-reason-main, exp-example-for, exp-close-thats-why]
+    retrieval_prompts: ["선호를 바로 말하세요.", "최근 예시를 붙이세요."]
+    progressive_hints: [{level: 1, text: "예시 표현"}, {level: 2, text: "For example"}, {level: 3, text: "For example, last ___, I ___."}, {level: 4, text: "For example, last weekend, I watched a thriller at home."}]
+    assembly_requirements: ["영화 장르", "선호 이유"]
+    expansion_requirements: ["최근 예시", "마무리"]
+    transfer_question_ids: [q-weekend-habit]
+    mastery_criteria: ["예시 표현 무힌트 사용", "주말 질문으로 전이"]
+  - id: unit-cafe-description
+    question_id: q-cafe-description
+    expression_ids: [exp-start-actually, exp-detail-especially, exp-feeling-made, exp-close-thats-why]
+    retrieval_prompts: ["장소의 핵심 특징을 말하세요.", "좋아하는 상황을 구체화하세요."]
+    progressive_hints: [{level: 1, text: "구체화 표현"}, {level: 2, text: "especially"}, {level: 3, text: "I especially like it when ___."}, {level: 4, text: "I especially like it when the cafe is quiet in the morning."}]
+    assembly_requirements: ["위치", "분위기"]
+    expansion_requirements: ["구체적인 상황", "감정"]
+    transfer_question_ids: [q-home-description]
+    mastery_criteria: ["장소 묘사 완성", "집 질문으로 전이"]
+  - id: unit-exercise-habit
+    question_id: q-exercise-habit
+    expression_ids: [exp-start-actually, exp-reason-main, exp-example-for, exp-feeling-made]
+    retrieval_prompts: ["운동 습관과 이유를 연결하세요."]
+    progressive_hints: [{level: 1, text: "이유 표현"}, {level: 2, text: "The main"}, {level: 3, text: "The main reason is that ___."}, {level: 4, text: "The main reason is that walking helps me clear my head."}]
+    assembly_requirements: ["운동 종류", "언제"]
+    expansion_requirements: ["이유", "최근 예시"]
+    transfer_question_ids: [q-weekend-habit]
+    mastery_criteria: ["습관과 이유 연결", "주말 질문으로 전이"]
+  - id: unit-tech-change
+    question_id: q-tech-change
+    expression_ids: [exp-compare-used-to, exp-example-for, exp-feeling-made, exp-close-thats-why]
+    retrieval_prompts: ["예전과 지금의 여가를 비교하세요."]
+    progressive_hints: [{level: 1, text: "변화 비교"}, {level: 2, text: "It used"}, {level: 3, text: "It used to be ___, but now ___."}, {level: 4, text: "I used to watch TV, but now I stream videos on my phone."}]
+    assembly_requirements: ["예전 활동", "현재 활동"]
+    expansion_requirements: ["구체적 예시", "변화에 대한 느낌"]
+    transfer_question_ids: [q-neighborhood-change]
+    mastery_criteria: ["비교 구조 완성", "동네 변화로 전이"]
+  - id: unit-first-job-memory
+    question_id: q-first-job-memory
+    expression_ids: [exp-sequence-first, exp-problem-issue, exp-feeling-made, exp-close-thats-why]
+    retrieval_prompts: ["첫 순간과 어려움을 순서대로 말하세요."]
+    progressive_hints: [{level: 1, text: "사건 시작"}, {level: 2, text: "At first"}, {level: 3, text: "At first, I ___."}, {level: 4, text: "At first, I felt nervous because I did not know anyone."}]
+    assembly_requirements: ["첫 행동", "어려움"]
+    expansion_requirements: ["해결", "감정 변화"]
+    transfer_question_ids: [q-travel-memory]
+    mastery_criteria: ["경험 순서 완성", "여행 경험으로 전이"]
+  - id: unit-cafe-roleplay
+    question_id: q-cafe-roleplay
+    expression_ids: [exp-start-actually, exp-problem-issue, exp-repair-mean, exp-close-thats-why]
+    retrieval_prompts: ["받은 음료의 문제를 설명하세요.", "원하는 해결을 분명히 말하세요."]
+    progressive_hints: [{level: 1, text: "문제 설명"}, {level: 2, text: "The problem"}, {level: 3, text: "The problem was that ___."}, {level: 4, text: "The problem was that I ordered tea, but I received coffee."}]
+    assembly_requirements: ["주문 내용", "받은 내용"]
+    expansion_requirements: ["교환 요청", "정중한 마무리"]
+    transfer_question_ids: [q-hotel-roleplay]
+    mastery_criteria: ["문제와 요청 완성", "호텔 상황으로 전이"]

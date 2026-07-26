@@ -1,0 +1,16 @@
+version: 1
+entry: "홈에서 질문 선택"
+steps:
+  - id: "recall"
+    outcome: "한국어 의도를 보고 영어 표현을 직접 적는다."
+  - id: "assemble"
+    outcome: "표현을 자기 정보와 결합해 한 문장을 만든다."
+  - id: "expand"
+    outcome: "이유·예시·감정 중 요구 요소를 더한다."
+  - id: "timed"
+    outcome: "힌트 없이 제한 시간 안에 다시 만든다."
+  - id: "transfer"
+    outcome: "다른 주제에서 같은 표현 기능을 사용한다."
+  - id: "feedback"
+    outcome: "인출 시간·힌트·구조·전이 결과와 복습 우선순위를 확인한다."
+

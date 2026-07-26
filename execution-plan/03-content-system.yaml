@@ -1,0 +1,113 @@
+version: 2
+process:
+  id: "content_system"
+  execution_status: "completed"
+  name: "최소 콘텐츠 제작과 확장 가능한 로컬 팩"
+  owner_role: "content_engineering"
+
+objective: >-
+  최소 학습 콘텐츠로 핵심 기능을 실행하고, 이후 로컬 팩을 추가해도
+  앱 코드를 바꾸지 않는 콘텐츠 계약과 빌드 절차를 만든다.
+
+scope:
+  owns:
+    - "질문·표현·훈련 unit 스키마"
+    - "core 콘텐츠 팩"
+    - "catalog와 stable ID"
+    - "콘텐츠 build·validation"
+    - "콘텐츠 작성·검수 상태"
+  does_not_own:
+    - "학습 state machine"
+    - "화면 구현"
+    - "원격 팩 다운로드"
+
+content_authoring:
+  method: "질문, 표현, training unit, model answer를 정해진 스키마에 맞춰 작성한다."
+  workflow:
+    - "초안 작성"
+    - "스키마 검증"
+    - "표현 재사용과 전이 연결 확인"
+    - "문장 자연스러움과 난이도 검수"
+    - "approved 콘텐츠 빌드"
+
+core_pack:
+  pack_id: "core-v1"
+  initial_question_count: 12
+  growth_rule: "핵심 vertical slice 검증 후 같은 계약으로 30개까지 추가"
+  question_types:
+    - "description"
+    - "habit_preference"
+    - "past_experience"
+    - "comparison_change"
+    - "problem_solution"
+    - "role_play"
+
+entities:
+  content_pack:
+    required: ["id", "version", "schema_version", "question_ids", "expression_ids", "training_unit_ids"]
+  question:
+    required: ["id", "pack_id", "topic", "difficulty", "type", "prompt", "target_intent_ids"]
+  expression:
+    required: ["id", "function", "intent_ko", "chunk", "sentence_frames", "substitution_slots"]
+  training_unit:
+    required:
+      - "id"
+      - "question_id"
+      - "expression_ids"
+      - "retrieval_prompts"
+      - "progressive_hints"
+      - "assembly_requirements"
+      - "expansion_requirements"
+      - "transfer_question_ids"
+      - "mastery_criteria"
+  model_answer:
+    required: ["question_id", "text", "review_status"]
+    visibility: "사용자 산출 이후에만 표시"
+
+id_policy:
+  - "ID는 내용과 배열 위치에서 독립된 영구 문자열이다."
+  - "기존 ID의 의미를 바꾸지 않고 대체 콘텐츠는 새 ID와 replaced_by를 사용한다."
+  - "팩·질문·표현·훈련 unit namespace를 구분한다."
+  - "LocalStorage에는 content ID와 content version을 함께 저장한다."
+
+validation_rules:
+  - "모든 참조 ID가 존재한다."
+  - "각 질문에 표현 청크 3개 이상과 전이 질문 1개 이상이 있다."
+  - "각 표현은 서로 다른 질문 3개 이상에서 재사용 가능하다."
+  - "힌트는 의미→첫 단어→빈칸 프레임→전체 예시 순서다."
+  - "model answer는 approved 상태만 빌드한다."
+  - "질문 수와 배열 순서를 앱 계약으로 사용하지 않는다."
+  - "작성자와 검수 상태를 콘텐츠 메타데이터로 기록한다."
+
+build_pipeline:
+  - "YAML parse"
+  - "Zod schema validation"
+  - "cross-reference validation"
+  - "ID uniqueness validation"
+  - "learning contract validation"
+  - "approved-only filtering"
+  - "deterministic JSON build"
+  - "manifest와 checksum 생성"
+
+artifacts:
+  - "content/core-v1/questions.yaml"
+  - "content/core-v1/expressions.yaml"
+  - "content/core-v1/training-units.yaml"
+  - "content/core-v1/model-answers.yaml"
+  - "content/catalog.yaml"
+  - "src/content/schemas.ts"
+  - "scripts/build-content.ts"
+  - "dist/content/catalog.json"
+
+exit_gate:
+  - "12개 질문으로 전체 기능을 실행할 수 있다."
+  - "npm run content:validate가 잘못된 ID·힌트·전이 fixture를 거부한다."
+  - "fixture 팩 추가 시 앱 코드 변경 없이 catalog에 나타난다."
+  - "콘텐츠 작성부터 로컬 JSON 빌드까지 한 명령으로 재현된다."
+
+agent_prompt: |-
+  당신은 콘텐츠 엔지니어다.
+  정해진 스키마에 맞춰 core-v1 학습 콘텐츠 팩을 구성하라.
+  처음에는 12개 질문만으로 모든 질문 유형과 전체 학습 흐름을 검증하고, 이후 동일 계약으로 30개까지 늘릴 수 있게 하라.
+  질문, 표현, training unit, model answer, pack catalog의 Zod 스키마와 stable ID 정책을 구현하라.
+  콘텐츠 YAML을 검증된 deterministic JSON으로 빌드하고 참조 ID, 힌트 순서, 표현 재사용, 전이 질문을 검사하라.

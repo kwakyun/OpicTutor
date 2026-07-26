@@ -1,0 +1,121 @@
+version: 2
+process:
+  id: "engineering_foundation"
+  execution_status: "completed"
+  name: "로컬 MVP 엔지니어링 기반과 모듈 경계"
+  owner_role: "frontend_architecture"
+
+objective: >-
+  학습 규칙·콘텐츠·저장소·React UI가 서로 얽히지 않는 로컬 프론트엔드 모듈 구조와
+  재현 가능한 개발·검증 환경을 구성한다.
+
+scope:
+  owns:
+    - "도구 선택과 버전 고정"
+    - "모듈과 의존성 방향"
+    - "디렉터리 구조와 public API"
+    - "오류 처리·로깅·환경 규칙"
+    - "공통 npm 명령"
+  does_not_own:
+    - "질문과 표현 내용"
+    - "숙련 계산 세부 규칙"
+    - "화면별 사용자 경험"
+    - "최종 E2E 승인"
+
+stack:
+  runtime: "local browser"
+  language: "TypeScript strict"
+  app: "Next.js App Router + React"
+  routing: "Next.js file-system routing"
+  styling: "Tailwind CSS"
+  schema_validation: "Zod"
+  content_format: "YAML source -> JSON build artifact"
+  persistence: "LocalStorage through repository adapter"
+  tests:
+    unit: "Vitest"
+    component: "Testing Library"
+    e2e: "Playwright"
+
+module_boundaries:
+  domain:
+    path: "src/domain"
+    responsibility: "순수 타입, 학습 상태, 규칙, 계산"
+    may_import: []
+  content:
+    path: "src/content"
+    responsibility: "콘텐츠 스키마, loader, catalog"
+    may_import: ["domain"]
+  storage:
+    path: "src/storage"
+    responsibility: "LocalStorage repository, migration, import/export"
+    may_import: ["domain"]
+  features:
+    path: "src/features"
+    responsibility: "practice, expressions, history, settings use cases"
+    may_import: ["domain", "content", "storage", "shared"]
+  app:
+    path: "src/app"
+    responsibility: "route composition, providers, app shell"
+    may_import: ["features", "shared"]
+  shared:
+    path: "src/shared"
+    responsibility: "범용 UI와 side-effect 없는 utility"
+    may_import: []
+
+dependency_rules:
+  - "domain은 React, browser API, storage, content 파일을 import하지 않는다."
+  - "feature 간 직접 import를 금지하고 필요하면 domain contract로 이동한다."
+  - "LocalStorage 접근은 storage module 밖에서 금지한다."
+  - "콘텐츠 파일 직접 import는 content loader 밖에서 금지한다."
+  - "app은 조립만 담당하고 비즈니스 규칙을 갖지 않는다."
+  - "barrel export는 모듈의 명시적 public API에만 사용한다."
+
+state_strategy:
+  server_state: "없음"
+  persistent_state: "repository를 통한 LocalStorage"
+  session_state: "practice feature의 reducer/state machine"
+  view_state: "컴포넌트 로컬 state"
+  rule: "전역 상태 라이브러리는 실제 교차 기능 필요가 증명되기 전 도입하지 않는다."
+
+error_strategy:
+  - "DomainError, ContentError, StorageError, UnexpectedError로 분류한다."
+  - "사용자 복구 가능한 오류에는 재시도·초기화·가져오기 선택을 제공한다."
+  - "손상 저장 데이터는 원본 백업 후 안전한 기본값으로 복구한다."
+  - "개발 로그에 답변 원문 전체를 기본 기록하지 않는다."
+  - "Error Boundary는 app shell에 두고 feature 오류 상태는 feature 안에서 처리한다."
+
+configuration_rules:
+  - "외부 API key와 배포 환경 변수를 요구하지 않는다."
+  - "질문 수, 주제, 모드, 점수 기준을 컴포넌트에 하드코딩하지 않는다."
+  - "패키지 버전은 lockfile로 고정한다."
+  - "TypeScript strict, noUncheckedIndexedAccess를 활성화한다."
+
+required_scripts:
+  dev: "vite"
+  build: "content:build 후 vite build"
+  check: "typecheck + lint + content:validate"
+  test: "vitest run"
+  test_e2e: "playwright test"
+  content_build: "YAML을 검증한 뒤 JSON으로 변환"
+  content_validate: "모든 팩과 참조 ID 계약 검증"
+
+architecture_records:
+  - "docs/adr/001-local-only.md"
+  - "docs/adr/002-pure-learning-domain.md"
+  - "docs/adr/003-versioned-content-packs.md"
+  - "docs/adr/004-versioned-local-storage.md"
+
+exit_gate:
+  - "모듈 의존성 방향이 문서와 코드에서 일치한다."
+  - "npm run check와 최소 smoke test가 통과한다."
+  - "앱이 빈 콘텐츠 fixture와 손상 저장 fixture를 안전하게 처리한다."
+  - "로그인·서버·배포 관련 패키지가 없다."
+
+agent_prompt: |-
+  당신은 로컬 프론트엔드 아키텍트다.
+  Next.js App Router, React, strict TypeScript, Tailwind, Zod, Vitest, Testing Library, Playwright 기반을 구성하라.
+  domain, content, storage, features, app, shared 모듈을 만들고 YAML에 정의된 단방향 의존성을 강제하라.
+  학습 규칙을 순수 TypeScript로 유지하고 React와 LocalStorage를 domain에서 제거하라.
+  LocalStorage는 repository adapter로만 접근하고 콘텐츠는 schema 검증 loader로만 읽어라.
+  외부 API key, 로그인, 백엔드, 전역 상태 라이브러리, 배포 설정을 추가하지 마라.
+  npm scripts, strict compiler options, 오류 분류, ADR을 구성하고 npm run check로 검증하라.

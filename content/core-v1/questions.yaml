@@ -1,0 +1,86 @@
+questions:
+  - id: q-home-description
+    pack_id: core-v1
+    topic: Home
+    difficulty: easy
+    type: description
+    prompt: Describe your home and tell me what you like most about it.
+    target_intent_ids: [start, detail, feeling]
+  - id: q-weekend-habit
+    pack_id: core-v1
+    topic: Weekend
+    difficulty: easy
+    type: habit_preference
+    prompt: What do you usually do on weekends, and why?
+    target_intent_ids: [start, reason, example]
+  - id: q-travel-memory
+    pack_id: core-v1
+    topic: Travel
+    difficulty: medium
+    type: past_experience
+    prompt: Tell me about a memorable trip you took.
+    target_intent_ids: [sequence, detail, feeling]
+  - id: q-neighborhood-change
+    pack_id: core-v1
+    topic: Neighborhood
+    difficulty: medium
+    type: comparison_change
+    prompt: How has your neighborhood changed over the years?
+    target_intent_ids: [compare, detail, feeling]
+  - id: q-travel-problem
+    pack_id: core-v1
+    topic: Travel
+    difficulty: medium
+    type: problem_solution
+    prompt: Tell me about a problem you had while traveling and how you handled it.
+    target_intent_ids: [sequence, problem, closing]
+  - id: q-hotel-roleplay
+    pack_id: core-v1
+    topic: Hotel
+    difficulty: medium
+    type: role_play
+    prompt: Call a hotel and ask about a room, breakfast, and check-in time.
+    target_intent_ids: [start, clarify, closing]
+  - id: q-movie-preference
+    pack_id: core-v1
+    topic: Movies
+    difficulty: easy
+    type: habit_preference
+    prompt: What kind of movies do you enjoy, and what makes them interesting?
+    target_intent_ids: [start, reason, example]
+  - id: q-cafe-description
+    pack_id: core-v1
+    topic: Cafe
+    difficulty: easy
+    type: description
+    prompt: Describe a cafe you often visit.
+    target_intent_ids: [start, detail, feeling]
+  - id: q-exercise-habit
+    pack_id: core-v1
+    topic: Exercise
+    difficulty: easy
+    type: habit_preference
+    prompt: What kind of exercise do you usually do?
+    target_intent_ids: [start, reason, example]
+  - id: q-tech-change
+    pack_id: core-v1
+    topic: Technology
+    difficulty: medium
+    type: comparison_change
+    prompt: How has technology changed the way you spend your free time?
+    target_intent_ids: [compare, example, feeling]
+  - id: q-first-job-memory
+    pack_id: core-v1
+    topic: Work
+    difficulty: medium
+    type: past_experience
+    prompt: Tell me about your first day at a job or school.
+    target_intent_ids: [sequence, problem, feeling]
+  - id: q-cafe-roleplay
+    pack_id: core-v1
+    topic: Cafe
+    difficulty: medium
+    type: role_play
+    prompt: You received the wrong drink. Explain the problem and ask for a replacement.
+    target_intent_ids: [start, problem, clarify]
+

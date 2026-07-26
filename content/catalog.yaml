@@ -1,0 +1,14 @@
+schema_version: 1
+active_pack_ids:
+  - core-v1
+packs:
+  - id: core-v1
+    version: 1.0.0
+    schema_version: 1
+    title: Core Speaking Moves
+    description: 표현 인출부터 새 질문 전이까지 연습하는 핵심 팩
+  - id: fixture-v1
+    version: 1.0.0
+    schema_version: 1
+    title: Fixture Pack
+    description: 앱 코드 변경 없는 팩 추가를 검증하는 비활성 테스트 팩

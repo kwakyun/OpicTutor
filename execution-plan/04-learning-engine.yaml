@@ -1,0 +1,118 @@
+version: 2
+process:
+  id: "learning_engine"
+  execution_status: "completed"
+  name: "표현 인출·문장 구성 학습 엔진"
+  owner_role: "domain_engineering"
+
+objective: >-
+  React와 저장소에 독립적인 순수 TypeScript 학습 엔진으로 연습 상태 전이,
+  힌트, 피드백, 숙련도, 복습 선정을 결정론적으로 구현한다.
+
+scope:
+  owns:
+    - "연습 state machine"
+    - "힌트 progression"
+    - "과정 중심 metric 계산"
+    - "숙련 상태와 복습 선정"
+    - "도메인 오류와 invariant"
+  does_not_own:
+    - "DOM과 React component"
+    - "LocalStorage 접근"
+    - "콘텐츠 파일 읽기"
+    - "공식 등급 예측"
+
+practice_states:
+  - "idle"
+  - "recalling_expression"
+  - "assembling_sentence"
+  - "expanding_sentence"
+  - "timed_recall"
+  - "transferring"
+  - "reviewing_feedback"
+  - "completed"
+
+events:
+  - "START"
+  - "SUBMIT_RECALL"
+  - "REQUEST_HINT"
+  - "SUBMIT_SENTENCE"
+  - "SUBMIT_EXPANSION"
+  - "START_TIMED_RECALL"
+  - "TIME_EXPIRED"
+  - "SUBMIT_TIMED_RECALL"
+  - "SUBMIT_TRANSFER"
+  - "VIEW_FEEDBACK"
+  - "COMPLETE"
+  - "RESET"
+
+invariants:
+  - "현재 상태에서 허용되지 않은 이벤트는 DomainError를 반환한다."
+  - "사용자 산출 전에는 model answer를 state에 포함하지 않는다."
+  - "힌트 단계는 감소하거나 건너뛰지 않는다."
+  - "타이머 만료와 제출은 중복 완료를 만들지 않는다."
+  - "동일 attempt는 한 번만 숙련도에 반영한다."
+  - "전이 과제 없이 mastery 상태가 될 수 없다."
+
+hint_levels:
+  - level: 0
+    content: "없음"
+  - level: 1
+    content: "의미 또는 표현 기능"
+  - level: 2
+    content: "첫 단어"
+  - level: 3
+    content: "빈칸 문장 프레임"
+  - level: 4
+    content: "전체 예시"
+
+metrics:
+  - "retrieval_latency_ms"
+  - "first_attempt_complete"
+  - "max_hint_level_used"
+  - "sentence_structure_complete"
+  - "required_expansion_complete"
+  - "timed_recall_complete"
+  - "transfer_success"
+
+mastery_states:
+  - "new"
+  - "learning"
+  - "practicing"
+  - "transfer_ready"
+  - "mastered"
+
+mastery_rules:
+  - "한 질문 성공만으로 mastered가 되지 않는다."
+  - "서로 다른 주제에서 같은 표현 기능을 성공해야 한다."
+  - "전체 예시 힌트를 사용한 attempt는 무힌트 성공으로 계산하지 않는다."
+  - "transfer_success가 없으면 최대 transfer_ready다."
+  - "실패 또는 높은 힌트 의존은 복습 우선순위를 높인다."
+
+design_constraints:
+  - "모든 reducer와 calculator는 동일 입력에 동일 결과를 반환한다."
+  - "현재 시각과 random은 함수 인자로 주입한다."
+  - "문장 의미의 AI 평가는 하지 않고 구조·미션 달성 같은 규칙 기반 신호만 사용한다."
+  - "공식 OPIc 점수나 AL 확률을 반환하지 않는다."
+
+artifacts:
+  - "src/domain/practice-machine.ts"
+  - "src/domain/hints.ts"
+  - "src/domain/feedback.ts"
+  - "src/domain/mastery.ts"
+  - "src/domain/review-queue.ts"
+  - "tests/domain/"
+
+exit_gate:
+  - "모든 상태와 이벤트의 정상·거절 전이가 단위 테스트된다."
+  - "중복 제출·타이머 경쟁·힌트 누락·전이 없는 숙련을 테스트가 방지한다."
+  - "domain 테스트가 DOM과 LocalStorage 없이 실행된다."
+  - "공식 등급 예측 코드가 없다."
+
+agent_prompt: |-
+  당신은 학습 도메인 엔지니어다.
+  React, DOM, LocalStorage, 콘텐츠 loader 없이 실행되는 순수 TypeScript 연습 state machine을 구현하라.
+  idle부터 completed까지의 상태와 허용 이벤트를 명시하고 잘못된 전이에는 DomainError를 반환하라.
+  힌트 단계, 인출 시간, 첫 시도, 구조, 확장, 시간 제한 회상, 전이 metric과 숙련 상태를 결정론적으로 계산하라.
+  시각과 random은 주입하고 중복 제출, 타이머 경쟁, 전체 예시 의존, 전이 없는 mastery를 단위 테스트하라.
+  AI 의미 평가와 공식 OPIc 등급 예측은 구현하지 마라.

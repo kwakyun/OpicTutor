@@ -1,0 +1,110 @@
+version: 2
+process:
+  id: "quality_gate"
+  execution_status: "completed"
+  name: "로컬 MVP 검증과 완료 판정"
+  owner_role: "quality_engineering"
+
+objective: >-
+  콘텐츠 계약, 순수 학습 엔진, 저장소 안정성, UI 통합과 핵심 사용자 흐름을
+  중복 없이 계층별로 검증하고 로컬 MVP의 완료 여부를 판정한다.
+
+scope:
+  owns:
+    - "테스트 계층과 책임"
+    - "회귀·접근성·저장소 복구 시나리오"
+    - "품질 명령과 완료 보고서"
+  does_not_own:
+    - "새 기능 구현"
+    - "콘텐츠 범위 확대"
+    - "배포 승인"
+
+test_pyramid:
+  contract_tests:
+    responsibility: "콘텐츠 schema, ID 참조, 팩 manifest, build 결정성"
+    target: "scripts와 content module"
+  domain_unit_tests:
+    responsibility: "상태 전이, 힌트, metric, mastery, review queue"
+    target: "src/domain"
+  storage_unit_tests:
+    responsibility: "repository, migration, 손상 복구, import/export"
+    target: "src/storage"
+  component_tests:
+    responsibility: "단계별 렌더링, 정답 숨김, 키보드, 오류 상태"
+    target: "feature component"
+  integration_tests:
+    responsibility: "loader→domain→repository 경계"
+    target: "practice use case"
+  e2e_tests:
+    responsibility: "사용자 관점의 소수 핵심 흐름"
+    target: "local app"
+
+critical_scenarios:
+  - id: "fresh_start"
+    expected: "계정 없이 질문을 선택하고 첫 연습을 시작한다."
+  - id: "answer_hidden"
+    expected: "직접 산출 전 model answer가 화면과 DOM에 없다."
+  - id: "full_loop"
+    expected: "인출→조립→확장→재인출→전이→피드백을 완료한다."
+  - id: "invalid_transition"
+    expected: "단계 건너뛰기와 중복 제출이 상태를 손상하지 않는다."
+  - id: "timer_race"
+    expected: "만료와 제출이 동시에 발생해도 attempt가 한 번만 완료된다."
+  - id: "reload_restore"
+    expected: "새로고침 후 호환되는 draft를 복구한다."
+  - id: "content_upgrade"
+    expected: "content version 변경 후 기존 기록을 stable ID로 표시한다."
+  - id: "corrupt_storage"
+    expected: "손상 데이터에서 앱이 중단되지 않고 복구 선택을 제공한다."
+  - id: "data_portability"
+    expected: "내보낸 JSON을 초기화 후 다시 가져온다."
+  - id: "fixture_pack"
+    expected: "앱 수정 없이 로컬 catalog에 추가한 팩을 표시한다."
+  - id: "offline_runtime"
+    expected: "설치 후 외부 네트워크 요청 없이 핵심 흐름이 작동한다."
+  - id: "speech_input_adapter"
+    expected: "최종 영어 음성 인식 결과가 현재 답변에 추가되며 미지원·권한 거부 시 타이핑을 계속할 수 있다."
+
+quality_gates:
+  - "TypeScript typecheck 통과"
+  - "lint 통과"
+  - "content validation 통과"
+  - "domain·storage unit test 통과"
+  - "component·integration test 통과"
+  - "critical E2E 통과"
+  - "키보드 전용 핵심 흐름 통과"
+  - "음성 입력 지원·미지원·권한 거부 컴포넌트 테스트 통과"
+  - "브라우저 console의 처리되지 않은 오류 없음"
+  - "로그인·서버·외부 API·배포 의존성 없음"
+
+commands:
+  - "npm run content:validate"
+  - "npm run check"
+  - "npm run test"
+  - "npm run test:e2e"
+  - "npm run build"
+
+report:
+  output: "reports/local-mvp-validation.yaml"
+  required_fields:
+    - "commit_or_snapshot"
+    - "content_version"
+    - "commands"
+    - "passed_scenarios"
+    - "failed_scenarios"
+    - "known_limitations"
+    - "final_status"
+
+exit_gate:
+  - "모든 quality gate가 통과한다."
+  - "critical scenario 실패가 0개다."
+  - "알려진 한계가 non-goal과 일치한다."
+  - "final_status가 local_mvp_ready다."
+
+agent_prompt: |-
+  당신은 품질 엔지니어다.
+  새 기능을 만들지 말고 콘텐츠 계약, domain, storage, component, integration, E2E 책임을 중복 없이 나눠 검증하라.
+  정답 선노출, 잘못된 상태 전이, 타이머 경쟁, 중복 attempt, 새로고침 복구, 콘텐츠 버전 변경,
+  손상 저장소, import/export, fixture 팩, 오프라인 실행을 반드시 테스트하라.
+  npm run content:validate, check, test, test:e2e, build 결과와 알려진 한계를 보고서에 기록하라.
+  로그인·서버·외부 API·배포 의존성이 발견되면 완료로 판정하지 마라.

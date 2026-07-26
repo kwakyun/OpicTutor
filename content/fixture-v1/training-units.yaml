@@ -1,0 +1,11 @@
+training_units:
+  - id: unit-fixture-park
+    question_id: q-fixture-park
+    expression_ids: [exp-start-actually, exp-detail-especially, exp-feeling-made]
+    retrieval_prompts: ["공원의 특징을 내 문장으로 말하세요."]
+    progressive_hints: [{level: 1, text: "시작 표현"}, {level: 2, text: "Actually"}, {level: 3, text: "Actually, I would say that ___."}, {level: 4, text: "Actually, I would say that this park is peaceful."}]
+    assembly_requirements: ["장소", "특징"]
+    expansion_requirements: ["구체적 상황", "감정"]
+    transfer_question_ids: [q-home-description]
+    mastery_criteria: ["로컬 팩 문항 완성"]
+
