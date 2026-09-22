@@ -1,34 +1,51 @@
 # OPIc Speech Quest
 
-영어 표현을 기억에서 꺼내 직접 문장을 만들고, 확장하고, 새로운 질문에 전이하는 로컬 학습 MVP입니다.
+영어 표현을 기억에서 꺼내 직접 문장을 만들고, 확장하고, 다른 질문에 적용하는 로컬 학습 MVP입니다.
+정답 문장을 보기만 하는 학습에서 벗어나 직접 답변을 구성하는 연습 흐름을 구현합니다.
 
-## 실행
+## 주요 기능과 설계
 
-```powershell
-pnpm install
-npm run dev
-```
+- 단계별 답변 연습과 학습 상태 전환: [학습 상태 머신](src/domain/practice-machine.ts)
+- 숙련도·복습 규칙: [도메인 코드](src/domain/)
+- YAML 학습 콘텐츠와 스키마 검증: [콘텐츠](content/), [스키마](src/content/schemas.ts)
+- 브라우저에 기록 저장: [저장소 구현](src/storage/repository.ts)
+- 선택형 음성 입력: [음성 인식 훅](src/features/practice/useSpeechRecognition.ts)
 
-브라우저에서 `http://127.0.0.1:3000`을 엽니다. 로그인, 서버, 외부 API 키는 필요하지 않습니다.
+기술: Next.js 16, React 19, TypeScript, Zod, Vitest, Playwright.
+[설계 의사결정 기록](docs/adr/)에서 로컬 저장과 콘텐츠 분리 이유를 볼 수 있습니다.
 
-답변은 타이핑하거나 `마이크로 말하기`를 눌러 영어 음성을 텍스트로 받아 적을 수 있습니다. 음성 입력은 Web Speech API를 지원하는 브라우저(일반적으로 Chrome/Edge 계열)와 마이크 권한이 필요합니다. 앱은 음성 파일을 자체 서버에 업로드하거나 저장하지 않으며, 브라우저 환경에 따라 브라우저 제공 음성 서비스가 네트워크를 사용할 수 있습니다. 미지원 또는 권한 거부 시에도 타이핑으로 모든 연습을 진행할 수 있습니다.
+## 실행 방법
 
-## 검증
+Node.js 22.13 이상과 pnpm 11.9.0을 사용합니다(package.json 기준).
 
-```powershell
-npm run content:validate
-npm run check
-npm run test
-npm run test:e2e
-npm run build
-```
+~~~bash
+git clone https://github.com/kwakyun/OpicTutor.git
+cd OpicTutor
+pnpm install --frozen-lockfile
+pnpm dev
+~~~
 
-## 구조
+브라우저에서 http://127.0.0.1:3000 에 접속해 질문 선택 → 답변 작성 → 학습 기록 확인 순서로 사용합니다.
+로그인과 외부 API 키는 필요하지 않습니다.
 
-- `content/`: YAML 콘텐츠 팩
-- `src/domain/`: 순수 TypeScript 학습 상태 머신과 숙련 규칙
-- `src/content/`: 콘텐츠 스키마와 검증된 catalog
-- `src/storage/`: versioned LocalStorage repository
-- `src/features/`: 연습·표현·기록·설정 기능
-- `app/`: App Router 화면 조립
-- `execution-plan/`: MECE 실행 계획
+## 검증 명령
+
+~~~bash
+pnpm check
+pnpm test
+pnpm exec playwright install chromium
+pnpm test:e2e
+pnpm build
+~~~
+
+[테스트 코드](tests/)와 [기존 로컬 검증 기록](reports/local-mvp-validation.yaml)을 확인할 수 있습니다.
+기존 보고서는 해당 시점의 기록이며 이번 변경의 테스트 결과와 구분합니다.
+
+## 제한 사항
+
+- 브라우저 로컬 저장 방식으로 기기 간 자동 동기화는 제공하지 않습니다.
+- 음성 입력은 브라우저 지원과 마이크 권한이 필요합니다. 미지원 시에도 타이핑으로 연습할 수 있습니다.
+- 앱 자체 서버에 음성을 저장하지 않지만 브라우저의 음성 서비스가 네트워크를 사용할 수 있습니다.
+- 학습 보조 MVP이며 공식 OPIc 평가나 점수 예측 서비스가 아닙니다.
+
+[AI 활용 기록](AI_NOTES.md) · [변경 기록](CHANGELOG.md) · [작업 방법](CONTRIBUTING.md)
